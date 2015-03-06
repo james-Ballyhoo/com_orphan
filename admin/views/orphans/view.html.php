@@ -14,13 +14,47 @@ class OrphanViewOrphans extends JViewLegacy
             "ttl_orphans"  => array_reduce($this->oTable, function($carry,$item){
                 return $carry + (sizeof($item["refs"]) == 0 ? 1 : 0);
             },0),
-        	"ttl_size"  => $this->getModel()->human_filesize(array_reduce($this->oTable, function($carry,$item){
-        		return $carry + $item["filesize"];
-        	},0)),
-        	"ttl_wasted_size"  => $this->getModel()->human_filesize(array_reduce($this->oTable, function($carry,$item){
-        		return $carry + (sizeof($item["refs"]) == 0 ? $item["filesize"] : 0);
-        	},0)
-        	));
-        parent::display($tpl);
-    }
+            "ttl_size"  => $this->getModel()->human_filesize(array_reduce($this->oTable, function($carry,$item){
+              return $carry + $item["filesize"];
+          },0)),
+            "ttl_wasted_size"  => $this->getModel()->human_filesize(array_reduce($this->oTable, function($carry,$item){
+              return $carry + (sizeof($item["refs"]) == 0 ? $item["filesize"] : 0);
+          },0)
+            )
+            );
+        $this->graphs = array(
+            "total" => array(
+                "size" => array_reduce($this->oTable, function($carry,$item){
+                    return $carry + $item["filesize"];
+                },0),
+                "files" => sizeof($this->oTable)
+                ),
+            "good"  => array(
+                "size" => array_reduce($this->oTable, function($carry,$item){
+                    return $carry + (sizeof($item["refs"]) > 1 ? $item["filesize"] : 0);
+                },0),
+                "files" => array_reduce($this->oTable, function($carry,$item){
+                    return $carry + (sizeof($item["refs"]) > 1 ? 1 : 0);
+                },0)
+                ),
+            "single"  => array(
+                "size" => array_reduce($this->oTable, function($carry,$item){
+                    return $carry + (sizeof($item["refs"]) == 1 ? $item["filesize"] : 0);
+                },0),
+                "files" => array_reduce($this->oTable, function($carry,$item){
+                    return $carry + (sizeof($item["refs"]) == 1 ? 1 : 0);
+                },0)
+                ),
+            "orphan"  => array(
+                "size" => array_reduce($this->oTable, function($carry,$item){
+                    return $carry + (sizeof($item["refs"]) == 0 ? $item["filesize"] : 0);
+                },0),
+                "files" => array_reduce($this->oTable, function($carry,$item){
+                    return $carry + (sizeof($item["refs"]) == 0 ? 1 : 0);
+                },0)
+                )
+            );
+
+parent::display($tpl);
+}
 }
