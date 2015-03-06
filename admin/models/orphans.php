@@ -36,18 +36,24 @@ function _qryRefCount($file){
 
     //TODO: categories.description needs scanning as well!
     $db = JFactory::getDBO();
+    $_f = $db->escape($file);
+    $slashName = str_replace("\\","\\\\\\\\",substr(json_encode($file),1,-1));
 
     $qryCats = $db->getQuery(true)
     ->select('#__categories.path as articlepath')
     ->from('#__categories')
-    ->where("#__categories.description LIKE '%{$file}%'");
+    ->where("#__categories.description LIKE '%{$_f}%'");
 
+    $qryBanners = $db->getQuery(true)
+    ->select('CONCAT("BANNER ",#__banners.name) as articlepath')
+    ->from('#__banners')
+    ->where("#__banners.params LIKE '%{$slashName}%'");
     $query = $db->getQuery(true)
     ->select('CONCAT(#__categories.path,"/",#__content.`title`)as articlepath')
     ->from('#__content')
     ->from('#__categories')
-    ->where("#__categories.id = #__content.catid AND (`introtext` LIKE '%{$file}%' OR `fulltext` LIKE '%{$file}%')")
-    ->union($qryCats);
+    ->where("#__categories.id = #__content.catid AND (`introtext` LIKE '%{$_f}%' OR `fulltext` LIKE '%{$_f}%')")
+    ->union($qryCats)->union($qryBanners);
 
     $db->setQuery($query);
     return $db->loadColumn(0);
