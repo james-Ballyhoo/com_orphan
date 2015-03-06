@@ -6,6 +6,7 @@ jimport('joomla.application.component.controller');
 /**
  * General Controller of Registry component
  */
+ini_set('memory_limit', '512M');
 class OrphanController extends JControllerLegacy
 {
     public function display($cachable = false, $urlparams = false)
