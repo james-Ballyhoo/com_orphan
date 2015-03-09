@@ -29,12 +29,28 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				<div class="span4">
 					<label class="checkbox"><input type="checkbox" id="chkUnused" /> Check unused</label>
 					<script type="text/javascript">
-					jQuery("#chkUnused").change(function(){
-						jQuery(".orphanInput").attr("checked",jQuery("#chkUnused").attr("checked"));
-					})
+						jQuery("#chkUnused").change(function(){
+							jQuery(".orphanInput").attr("checked",jQuery("#chkUnused").attr("checked"));
+						})
 					</script>
 					<button name="_orphanaction" value="zipIt" class="btn btn-primary">Zip selected items</button>
-					<button name="_orphanaction" value="delete" class="btn btn-danger">Delete selected items</button>
+					<a href="#delModal" data-toggle="modal" class="btn btn-danger">Delete selected items</a>
+					<div class="modal hide fade" id="delModal">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+							<h3>Confirm Delete</h3>
+						</div>
+						<div class="modal-body">
+							<p>Are you sure you want to delete these files?</p>
+							<label class="checkbox"><input type="checkbox" name="_confirmAction" value="foo" />I am sure.</label>
+						</div>
+						<div class="modal-footer">
+							<a href="#" class="btn">Close</a>
+							<button name="_orphanaction" value="delete" class="btn btn-danger">Delete selected items</button>
+							
+						</div>
+					</div>
+
 					<pre><?php print_r($_POST); ?></pre>
 				</div>
 			</div>

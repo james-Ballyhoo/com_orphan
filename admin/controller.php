@@ -26,6 +26,10 @@ class OrphanController extends JControllerLegacy
             readfile($file);
             unlink($file);
             die();
+        }else if(isset($_POST['_orphanaction']) && $_POST['_orphanaction'] == "delete" && isset($_POST['_confirmAction'])){
+            foreach ($_POST['tozip'] as $_file) {
+                unlink(JPATH_ROOT . "/" . $_file);
+            }
         }
         // call parent behavior
         parent::display($cachable);
