@@ -30,7 +30,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					<label class="checkbox"><input type="checkbox" id="chkUnused" /> Check unused</label>
 					<script type="text/javascript">
 						jQuery("#chkUnused").change(function(){
-							jQuery(".orphanInput").attr("checked",jQuery("#chkUnused").attr("checked"));
+							jQuery(".orphanInput").attr("checked",jQuery("#chkUnused").is(":checked"));
 						})
 					</script>
 					<button name="_orphanaction" value="zipIt" class="btn btn-primary">Zip selected items</button>
@@ -51,7 +51,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						</div>
 					</div>
 
-					<pre><?php print_r($_POST); ?></pre>
+
 				</div>
 			</div>
 			<table class="table table-striped table-hover">
